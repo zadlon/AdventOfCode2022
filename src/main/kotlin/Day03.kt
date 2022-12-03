@@ -1,10 +1,10 @@
-object Day3 {
+object Day03 : Day<Int, Int>() {
 
-    fun part1(): Int = useInputLines { commonItemBetweenCompartments(it) }
+    override fun part1(input: Input): Int = input.useContentLines { commonItemBetweenCompartments(it) }
 
-    fun part2(): Int = useInputLines { commonItemBetweenThreeBags(it) }
+    override fun part2(input: Input): Int = input.useContentLines { commonItemBetweenThreeBags(it) }
 
-    fun commonItemBetweenCompartments(sequence: Sequence<String>): Int =
+    private fun commonItemBetweenCompartments(sequence: Sequence<String>): Int =
         sequence
             .sumOf { line ->
                 val halfOfString = line.length / 2
@@ -14,7 +14,7 @@ object Day3 {
                 commonItem.priority
             }
 
-    fun commonItemBetweenThreeBags(sequence: Sequence<String>): Int =
+    private fun commonItemBetweenThreeBags(sequence: Sequence<String>): Int =
         sequence
             .chunked(3)
             .sumOf { bags ->
@@ -25,15 +25,10 @@ object Day3 {
             }
 
 
-    val Char.priority: Int
+    private val Char.priority: Int
         get() =
             when {
                 isUpperCase() -> this - 'A' + 27
                 else -> this - 'a' + 1
             }
-}
-
-fun main() {
-    println("Part 1: ${Day3.part1()}")
-    println("Part 2: ${Day3.part2()}")
 }

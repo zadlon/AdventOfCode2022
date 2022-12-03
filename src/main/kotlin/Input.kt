@@ -1,11 +1,13 @@
 import java.io.File
 
-inline val <reified T> T.inputFile: File
-    get() =
-        File("input/${T::class.simpleName!!.lowercase()}.txt")
+class Input(inputFilePath: String) {
 
-inline val <reified T> T.input: String get() = inputFile.readText(Charsets.UTF_8)
+    @PublishedApi
+    internal val file: File = File(inputFilePath)
 
-inline val <reified T> T.inputAsLines: List<String> get() = inputFile.readLines(Charsets.UTF_8)
+    val contentText by lazy { file.readText(Charsets.UTF_8) }
 
-inline fun <reified T, V> T.useInputLines(block: (Sequence<String>) -> V): V = inputFile.useLines(Charsets.UTF_8, block)
+    val contentLines by lazy { file.readLines(Charsets.UTF_8) }
+
+    inline fun <T> useContentLines(block: (Sequence<String>) -> T): T = file.useLines(Charsets.UTF_8) { block(it) }
+}

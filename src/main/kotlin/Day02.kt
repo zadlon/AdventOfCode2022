@@ -1,13 +1,13 @@
 typealias Round = CharArray
 typealias RoundScoreReader = (Round) -> Int
 
-object Day2 {
+object Day02 : Day<Int, Int>() {
 
-    fun part1(): Int = useInputLines { computeScore(it, CodeAsShapeReader) }
+    override fun part1(input: Input): Int = input.useContentLines { computeScore(it, CodeAsShapeReader) }
 
-    fun part2(): Int = useInputLines { computeScore(it, CodeAsOutcomeReader) }
+    override fun part2(input: Input): Int = input.useContentLines { computeScore(it, CodeAsOutcomeReader) }
 
-    fun computeScore(sequence: Sequence<String>, reader: RoundScoreReader): Int =
+    private fun computeScore(sequence: Sequence<String>, reader: RoundScoreReader): Int =
         sequence.map { readLine(it) }
             .map { reader(it) }
             .sum()
@@ -104,10 +104,4 @@ object Day2 {
                 }
         }
     }
-}
-
-
-fun main() {
-    println("Part1 : ${Day2.part1()}}")
-    println("Part2 : ${Day2.part2()}")
 }
