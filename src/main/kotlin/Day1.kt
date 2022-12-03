@@ -6,6 +6,10 @@ object Day1 {
 
     private fun String.toCalories(): Int = split(System.lineSeparator()).sumOf(String::toInt)
 
+    fun part1() = useInputLines { findMaxCaloriesBySequence(it) }
+
+    fun part2() = useInputLines { findTotalForTop3BySequence(it) }
+
     //Part 1:
 
     fun findMaxCaloriesByText(input: String) =
@@ -22,38 +26,34 @@ object Day1 {
     fun findTotalForTop3ByText(input: String): Int =
         input.toElves()
             .map { elf -> elf.toCalories() }
-            .sortedDescending()
-            .take(3)
+            .nMax(3)
             .sum()
 
     fun findTotalForTop3BySequence(input: Sequence<String>): Int =
         input.mapSequence { CaloriesIterator(it) }
             .nMax(3)
             .sum()
-
 }
 
-private class CaloriesIterator(private val strings: Iterator<String>) : Iterator<Int> {
+    private class CaloriesIterator(private val strings: Iterator<String>) : Iterator<Int> {
 
-    override fun hasNext(): Boolean = strings.hasNext()
+        override fun hasNext(): Boolean = strings.hasNext()
 
-    override fun next(): Int {
-        var caloriesOnElf = 0
-        while (strings.hasNext()) {
-            val calories = strings.next()
-            if (calories.isBlank()) {
-                break
+        override fun next(): Int {
+            var caloriesOnElf = 0
+            while (strings.hasNext()) {
+                val calories = strings.next()
+                if (calories.isBlank()) {
+                    break
+                }
+                caloriesOnElf += calories.toInt()
             }
-            caloriesOnElf += calories.toInt()
+            return caloriesOnElf
         }
-        return caloriesOnElf
+
     }
 
-}
-
-fun main() {
-    println("Part 1 By Text: ${Day1.findMaxCaloriesByText(Day1.input)}")
-    println("Part 1 By Sequence: ${Day1.useInputLines(Day1::findMaxCaloriesBySequence)}")
-    println("Part 2 By Text: ${Day1.findTotalForTop3ByText(Day1.input)}")
-    println("Part 2 By Sequence: ${Day1.useInputLines(Day1::findTotalForTop3BySequence)}")
-}
+    fun main() {
+        println("Part 1: ${Day1.part1()}")
+        println("Part 2: ${Day1.part2()}")
+    }

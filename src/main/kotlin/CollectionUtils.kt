@@ -5,7 +5,15 @@ inline fun <T, V> Sequence<T>.mapSequence(crossinline operation: (Iterator<T>) -
 
 fun <T : Comparable<T>> Sequence<T>.nMax(n: Int): List<T> = nMax(n, naturalOrder())
 
-fun <T> Sequence<T>.nMax(n: Int, comparator: Comparator<T>): List<T> {
+fun <T : Comparable<T>> Iterable<T>.nMax(n: Int): List<T> = nMax(n, naturalOrder())
+
+fun <T : Comparable<T>> Iterator<T>.nMax(n: Int): List<T> = nMax(n, naturalOrder())
+
+fun <T> Iterable<T>.nMax(n: Int, comparator: Comparator<T>): List<T> = iterator().nMax(n, comparator)
+
+fun <T> Sequence<T>.nMax(n: Int, comparator: Comparator<T>): List<T> = iterator().nMax(n, comparator)
+
+fun <T> Iterator<T>.nMax(n: Int, comparator: Comparator<T>): List<T> {
     val pq = PriorityQueue(n, comparator)
     for (item in this) {
         if (pq.size < n) {

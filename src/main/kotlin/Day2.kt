@@ -3,6 +3,10 @@ typealias RoundScoreReader = (Round) -> Int
 
 object Day2 {
 
+    fun part1(): Int = useInputLines { computeScore(it, CodeAsShapeReader) }
+
+    fun part2(): Int = useInputLines { computeScore(it, CodeAsOutcomeReader) }
+
     fun computeScore(sequence: Sequence<String>, reader: RoundScoreReader): Int =
         sequence.map { readLine(it) }
             .map { reader(it) }
@@ -16,7 +20,7 @@ object Day2 {
         return charArrayOf(string[0], string[idx])
     }
 
-    object Part1 : RoundScoreReader {
+    object CodeAsShapeReader : RoundScoreReader {
 
         override fun invoke(p1: CharArray): Int {
             val opponent: Shape = Shape.of(p1[0])
@@ -32,7 +36,7 @@ object Day2 {
 
     }
 
-    object Part2 : RoundScoreReader {
+    object CodeAsOutcomeReader : RoundScoreReader {
 
         override fun invoke(p1: CharArray): Int {
             val opponent: Shape = Shape.of(p1[0])
@@ -104,6 +108,6 @@ object Day2 {
 
 
 fun main() {
-    println("Part1 : ${Day2.useInputLines { Day2.computeScore(it, Day2.Part1) }}")
-    println("Part2 : ${Day2.useInputLines { Day2.computeScore(it, Day2.Part2) }}")
+    println("Part1 : ${Day2.part1()}}")
+    println("Part2 : ${Day2.part2()}")
 }
