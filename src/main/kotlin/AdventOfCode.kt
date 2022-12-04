@@ -7,7 +7,8 @@ fun main(vararg args: String) {
         1 -> Day01
         2 -> Day02
         3 -> Day03
-        else -> TODO("$day has not been implemented yet")
+        4 -> Day04
+        else -> TODO("${day}th day has not been implemented yet")
     }
     dayRunner.run(Input(args[1]))
 }
