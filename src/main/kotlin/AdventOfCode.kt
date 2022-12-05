@@ -8,6 +8,7 @@ fun main(vararg args: String) {
         2 -> Day02
         3 -> Day03
         4 -> Day04
+        5 -> Day05
         else -> TODO("${day}th day has not been implemented yet")
     }
     args.getOrNull(1)
