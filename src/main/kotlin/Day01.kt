@@ -13,24 +13,28 @@ object Day01 : Day<Int, Int>() {
     //Part 1:
 
     private fun findMaxCaloriesByText(input: String) =
-        input.toElves()
+        input
+            .toElves()
             .maxOf { elf -> elf.toCalories() }
 
     private fun findMaxCaloriesBySequence(input: Sequence<String>): Int =
-        input.mapSequence { CaloriesIterator(it) }
+        input
+            .mapSequence { line -> CaloriesIterator(line) }
             .max()
 
 
     //Part 2:
 
     private fun findTotalForTop3ByText(input: String): Int =
-        input.toElves()
+        input
+            .toElves()
             .map { elf -> elf.toCalories() }
             .nMax(3)
             .sum()
 
     private fun findTotalForTop3BySequence(input: Sequence<String>): Int =
-        input.mapSequence { CaloriesIterator(it) }
+        input
+            .mapSequence { line -> CaloriesIterator(line) }
             .nMax(3)
             .sum()
 }

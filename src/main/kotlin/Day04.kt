@@ -5,12 +5,14 @@ object Day04 : Day<Int, Int>() {
     override fun part2(input: Input): Int = input.useContentLines { countPairWithOverlappingSections(it) }
 
     private fun countPairsWithFullyContainedSections(sequence: Sequence<String>): Int =
-        sequence.map(::toPairOfSections)
+        sequence
+            .map { line -> toPairOfSections(line) }
             .filter { pair -> with(pair) { first in second || second in first } }
             .count()
 
     private fun countPairWithOverlappingSections(sequence: Sequence<String>): Int =
-        sequence.map(::toPairOfSections)
+        sequence
+            .map { line -> toPairOfSections(line) }
             .filter { pair -> with(pair) { first.overlaps(second) } }
             .count()
 

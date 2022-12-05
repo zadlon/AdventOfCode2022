@@ -1,5 +1,5 @@
 typealias Round = CharArray
-typealias RoundScoreReader = (Round) -> Int
+typealias RoundScoreDecoder = (Round) -> Int
 
 object Day02 : Day<Int, Int>() {
 
@@ -7,9 +7,10 @@ object Day02 : Day<Int, Int>() {
 
     override fun part2(input: Input): Int = input.useContentLines { computeScore(it, CodeAsOutcomeReader) }
 
-    private fun computeScore(sequence: Sequence<String>, reader: RoundScoreReader): Int =
-        sequence.map { readLine(it) }
-            .map { reader(it) }
+    private fun computeScore(sequence: Sequence<String>, decoder: RoundScoreDecoder): Int =
+        sequence
+            .map { line -> readLine(line) }
+            .map { round -> decoder(round) }
             .sum()
 
     private fun readLine(string: String): Round {
@@ -20,7 +21,7 @@ object Day02 : Day<Int, Int>() {
         return charArrayOf(string[0], string[idx])
     }
 
-    object CodeAsShapeReader : RoundScoreReader {
+    object CodeAsShapeReader : RoundScoreDecoder {
 
         override fun invoke(p1: CharArray): Int {
             val opponent: Shape = Shape.of(p1[0])
@@ -36,7 +37,7 @@ object Day02 : Day<Int, Int>() {
 
     }
 
-    object CodeAsOutcomeReader : RoundScoreReader {
+    object CodeAsOutcomeReader : RoundScoreDecoder {
 
         override fun invoke(p1: CharArray): Int {
             val opponent: Shape = Shape.of(p1[0])
