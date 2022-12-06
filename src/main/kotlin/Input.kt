@@ -1,13 +1,34 @@
 import java.io.File
 
-class Input(inputFilePath: String) {
+sealed interface Input {
 
-    @PublishedApi
-    internal val file: File = File(inputFilePath)
+    val contentText: String
 
-    val contentText get() = file.readText(Charsets.UTF_8)
+    val contentLines: List<String>
 
-    val contentLines get() = file.readLines(Charsets.UTF_8)
+    fun <T> useContentLines(block: (Sequence<String>) -> T): T
+}
 
-    inline fun <T> useContentLines(block: (Sequence<String>) -> T): T = file.useLines(Charsets.UTF_8) { block(it) }
+class FileInput(filePath: String) : Input {
+
+    private val file = File(filePath)
+
+    override val contentText: String
+        get() = file.readText(Charsets.UTF_8)
+
+    override val contentLines: List<String>
+        get() = file.readLines(Charsets.UTF_8)
+
+    override fun <T> useContentLines(block: (Sequence<String>) -> T): T = file.useLines { block(it) }
+}
+
+data class StringInput(private val value: String) : Input {
+
+    override val contentText: String
+        get() = value
+
+    override val contentLines: List<String>
+        get() = value.lines()
+
+    override fun <T> useContentLines(block: (Sequence<String>) -> T) = block(value.lineSequence())
 }
