@@ -1,5 +1,3 @@
-import java.io.File
-
 abstract class Day<T, V> {
 
     open val defaultInput: Input get() {
