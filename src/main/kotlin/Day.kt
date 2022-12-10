@@ -1,17 +1,19 @@
 abstract class Day<T, V> {
 
-    open val defaultInput: Input get() {
-        val resourceName = "input/${this::class.java.simpleName.lowercase()}.txt"
-        return Day::class.java.getResource(resourceName)
-            ?.let { url -> FileInput(url.file) }
-            ?: throw IllegalArgumentException("Resource [$resourceName] not found")
-    }
+    open val defaultInput: Input
+        get() {
+            val resourceName = "input/${this::class.java.simpleName.lowercase()}.txt"
+            return Day::class.java.getResource(resourceName)
+                ?.let { url -> FileInput(url.file) }
+                ?: throw IllegalArgumentException("Resource [$resourceName] not found")
+        }
 
     fun run(input: Input = defaultInput) {
-        println("""
-            - Part 1: ${part1(input)}
-            - Part 2: ${part2(input)}
-        """.trimIndent()
+        println(
+            """-Part 1: 
+${part1(input)}
+-Part 2:
+${part2(input)}"""
         )
     }
 
