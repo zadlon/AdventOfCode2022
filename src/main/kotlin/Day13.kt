@@ -7,35 +7,34 @@ object Day13 : Day<Int, Int>() {
 
     override fun part1(input: Input): Int =
         input.useContentLines { lines ->
-            lines.group()
+            lines
+                .group()
                 .map { pair -> pair.map { Json.parseToJsonElement(it) } }
                 .withIndex()
                 .filter { (_, pair) -> pair[0] <= pair[1] }
                 .sumOf { (idx, _) -> idx + 1 }
         }
 
+    private val DIVIDER_PACKETS_1 = Json.parseToJsonElement("[[2]]")
+    private val DIVIDER_PACKETS_2 = Json.parseToJsonElement("[[6]]")
+
     override fun part2(input: Input): Int =
-        input.useContentLines {
-            it.filter { line -> line.isNotBlank() }
+        input.useContentLines { lines ->
+            lines
+                .filter { line -> line.isNotBlank() }
                 .map { line -> Json.parseToJsonElement(line) }
                 .toMutableList()
-                .apply { sortWith(JsonElementComparator) }
+                .apply {
+                    add(DIVIDER_PACKETS_1)
+                    add(DIVIDER_PACKETS_2)
+                    sortWith(JsonElementComparator)
+                }
                 .run {
-                    val x2 = binarySearch(
-                        element = JsonArray(listOf(JsonArray(listOf(JsonPrimitive(2))))),
-                        comparator = JsonElementComparator
-                    ).opposite()
-                    val x6 = binarySearch(
-                        element = JsonArray(listOf(JsonArray(listOf(JsonPrimitive(6))))),
-                        comparator = JsonElementComparator,
-                        fromIndex = x2
-                    ).opposite() + 1
-
-                    (x2) * (x6)
+                    val a = binarySearch(DIVIDER_PACKETS_1, JsonElementComparator) + 1
+                    val b = binarySearch(DIVIDER_PACKETS_2, JsonElementComparator, fromIndex = a) + 1
+                    a * b
                 }
         }
-
-    private fun Int.opposite(): Int = -this
 
     object JsonElementComparator : Comparator<JsonElement> {
         override fun compare(o1: JsonElement, o2: JsonElement): Int = o1.compareTo(o2)
