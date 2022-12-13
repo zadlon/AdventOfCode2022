@@ -16,6 +16,7 @@ fun main(vararg args: String) {
         10 -> Day10
         11 -> Day11
         12 -> Day12
+        13 -> Day13
         else -> TODO("${day}th day has not been implemented yet")
     }
     args.getOrNull(1)
