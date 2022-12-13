@@ -7,13 +7,13 @@ object Day04 : Day<Int, Int>() {
     private fun countPairsWithFullyContainedSections(sequence: Sequence<String>): Int =
         sequence
             .map { line -> toPairOfSections(line) }
-            .filter { pair -> with(pair) { first in second || second in first } }
+            .filter { (first, second) -> first in second || second in first }
             .count()
 
     private fun countPairWithOverlappingSections(sequence: Sequence<String>): Int =
         sequence
             .map { line -> toPairOfSections(line) }
-            .filter { pair -> with(pair) { first.overlaps(second) } }
+            .filter { (first, second) -> first.overlaps(second) }
             .count()
 
     private fun toPairOfSections(line: String): Pair<Section, Section> =
