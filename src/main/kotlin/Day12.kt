@@ -1,4 +1,3 @@
-import java.util.HashSet
 import java.util.LinkedList
 
 typealias Elevation = Char
@@ -13,13 +12,7 @@ object Day12 : Day<Int, Int>() {
 
     override fun part2(input: Input): Int = solve(input) { elevation -> elevation == START || elevation == 'a' }
 
-    private fun solve(input: Input, identifier: StartPositionIdentifier): Int =
-        parse(input.contentLines, identifier)
-            .map { start -> solveOne(start) }
-            .filter { solution -> solution != -1 }
-            .minOrNull() ?: -1
-
-    private fun solveOne(start: GraphNode): Int {
+    private fun solve(input: Input, startPositionIdentifier: StartPositionIdentifier): Int {
         class GraphNodeWithSteps(
             private val node: GraphNode,
             val steps: Int
@@ -27,14 +20,18 @@ object Day12 : Day<Int, Int>() {
             val vertices get() = node.vertices
             val isEnd get() = node.isEnd
         }
-        fun GraphNode.withSteps(steps: Int): GraphNodeWithSteps = GraphNodeWithSteps(this, steps)
 
-        val q = LinkedList<GraphNodeWithSteps>().apply { add(GraphNodeWithSteps(start, 0)) }
-        val visited = HashSet<GraphNode>()
+        fun GraphNode.withSteps(steps: Int): GraphNodeWithSteps =
+            GraphNodeWithSteps(this, steps).also { this.isVisited = true }
+
+        val q = parse(input.contentLines, startPositionIdentifier)
+            .map { node -> node.withSteps(0) }
+            .let { LinkedList(it) }
+
         while (q.isNotEmpty()) {
             val nodeWithSteps = q.poll()
             for (vertex in nodeWithSteps.vertices) {
-                if (visited.add(vertex)) {
+                if (!vertex.isVisited) {
                     val newNodeWithSteps = vertex.withSteps(nodeWithSteps.steps + 1)
                     if (newNodeWithSteps.isEnd) {
                         return newNodeWithSteps.steps
@@ -48,12 +45,9 @@ object Day12 : Day<Int, Int>() {
 
     class GraphNode(
         val vertices: MutableList<GraphNode> = mutableListOf(),
-        val isEnd: Boolean
-    ) {
-        override fun hashCode(): Int = System.identityHashCode(this)
-
-        override fun equals(other: Any?): Boolean = this === other
-    }
+        val isEnd: Boolean,
+        var isVisited: Boolean = false
+    )
 
     private fun Elevation.canClimb(other: Elevation): Boolean = (other.coerce() - coerce()) <= 1
 
@@ -69,6 +63,7 @@ object Day12 : Day<Int, Int>() {
             val node: GraphNode,
             val elevation: Elevation
         )
+
         fun GraphNode.withElevation(elevation: Elevation): GraphNodeWithElevation =
             GraphNodeWithElevation(this, elevation)
 
