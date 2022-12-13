@@ -1,8 +1,5 @@
 import java.util.PriorityQueue
 
-inline fun <T, V> Sequence<T>.mapSequence(crossinline operation: (Iterator<T>) -> Iterator<V>): Sequence<V> =
-    Sequence { operation(this.iterator()) }
-
 fun Sequence<String>.group() = group { line -> line.isBlank() }
 
 inline fun <T> Sequence<T>.group(crossinline separator: (T) -> Boolean): Sequence<List<T>> =
