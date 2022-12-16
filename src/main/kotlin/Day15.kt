@@ -5,7 +5,7 @@ object Day15 : Day<Int, Long>() {
     var part1Row = 2_000_000
 
     override fun part1(input: Input): Int {
-        val zones = input.contentLines.map { Zone.of(it) }
+        val zones = input.contentLines.map { Zone.of(it) }.sortedByDescending { it.radius }
         val xMin = zones.minOf { it.sensor.x - it.radius }
         val xMax = zones.maxOf { it.sensor.x + it.radius }
         var position = Position(xMin, part1Row)
@@ -29,7 +29,7 @@ object Day15 : Day<Int, Long>() {
     private const val MULTIPLIER = 4_000_000L
 
     override fun part2(input: Input): Long {
-        val zones = input.contentLines.map { Zone.of(it) }
+        val zones = input.contentLines.map { Zone.of(it) }.sortedByDescending { it.radius }
         var position = Position(-1, -1)
         mainLoop@ for (y in 0..part2CoordinatesMax) {
             position = Position(0, y)
