@@ -1,3 +1,5 @@
+import common.Input
+
 object Day04 : Day<Int, Int>() {
 
     override fun part1(input: Input): Int = input.useContentLines { countPairsWithFullyContainedSections(it) }

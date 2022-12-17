@@ -1,3 +1,5 @@
+import common.Input
+import common.Position
 import kotlin.math.abs
 
 object Day15 : Day<Int, Long>() {
@@ -16,7 +18,7 @@ object Day15 : Day<Int, Long>() {
                 ?.also { newPosition -> counter += (newPosition.x - position.x) }
                 ?: position.copy(x = position.x + 1)
         }
-        val beaconsOnLine = zones.asSequence()
+        val beaconsOnLine = zones
             .map { zone -> zone.beacon }
             .filter { beacon -> beacon.y == part1Row }
             .distinctBy { beacon -> beacon.x }
@@ -66,10 +68,6 @@ object Day15 : Day<Int, Long>() {
         }
     }
 
-    data class Position(val x: Int, val y: Int) {
-
-        fun manhattanDistance(other: Position): Int = abs(x - other.x) + abs(y - other.y)
-
-    }
+    fun Position.manhattanDistance(other: Position): Int = abs(x - other.x) + abs(y - other.y)
 
 }

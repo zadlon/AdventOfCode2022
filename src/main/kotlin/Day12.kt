@@ -1,3 +1,6 @@
+import common.Input
+import common.Position
+import common.surroundingPositions
 import java.util.LinkedList
 
 typealias Elevation = Char
@@ -76,8 +79,7 @@ object Day12 : Day<Int, Int>() {
                 val currentElevation = row[x]
                 val currentNode = GraphNode(isEnd = currentElevation == END)
                 nodes[y][x] = currentNode.withElevation(currentElevation)
-                nodes.getAllSurroundingPositions(Position(x, y))
-                    .mapNotNull { (x1, y1) -> nodes[y1][x1] }
+                nodes.surroundingPositions(Position(x, y))
                     .forEach { (otherNode, otherElevation) ->
                         if (currentElevation.canClimb(otherElevation)) {
                             currentNode.vertices += otherNode
@@ -92,34 +94,6 @@ object Day12 : Day<Int, Int>() {
             }
         }
         return startNodes
-    }
-
-    private fun <T> Array<Array<T>>.getAllSurroundingPositions(position: Position): List<Position> {
-        val res = mutableListOf<Position>()
-        if (position.x > 0) {
-            res += position.left()
-        }
-        if (position.x < first().size - 1) {
-            res += position.right()
-        }
-        if (position.y > 0) {
-            res += position.down()
-        }
-        if (position.y < size - 1) {
-            res += position.up()
-        }
-        return res
-    }
-
-    data class Position(val x: Int, val y: Int) {
-
-        fun up(): Position = copy(y = y + 1)
-
-        fun down(): Position = copy(y = y - 1)
-
-        fun right(): Position = copy(x = x + 1)
-
-        fun left(): Position = copy(x = x - 1)
     }
 
 }

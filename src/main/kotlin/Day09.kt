@@ -1,4 +1,8 @@
+import common.Position
+import common.Direction
+import common.Input
 import kotlin.math.sign
+typealias Knot = Position
 
 object Day09 : Day<Int, Int>() {
 
@@ -29,12 +33,7 @@ object Day09 : Day<Int, Int>() {
 
         fun move(direction: Direction): Rope =
             buildList(knots.size) {
-                val nextHead = when (direction) {
-                    Direction.UP -> head.copy(y = head.y + 1)
-                    Direction.DOWN -> head.copy(y = head.y - 1)
-                    Direction.LEFT -> head.copy(x = head.x - 1)
-                    Direction.RIGHT -> head.copy(x = head.x + 1)
-                }
+                val nextHead = direction.move(head)
                 add(nextHead)
                 for (i in 1 until knots.size) {
                     add(knots[i].follow(this@buildList[i - 1]))
@@ -42,37 +41,19 @@ object Day09 : Day<Int, Int>() {
             }.let { Rope(it) }
     }
 
-    data class Knot(val x: Int, val y: Int) {
-
-        fun follow(previousKnot: Knot): Knot {
-            if (this == previousKnot) {
-                return this
-            }
-            val diffX = (previousKnot.x - x)
-            val diffY = (previousKnot.y - y)
-            return if (diffX !in -1..1 || diffY !in -1..1) {
-                Knot(
-                    x = x + diffX.sign,
-                    y = y + diffY.sign
-                )
-            } else {
-                this
-            }
+    fun Knot.follow(previous: Knot): Knot {
+        if (this == previous) {
+            return this
         }
-    }
-
-    enum class Direction {
-        RIGHT, UP, LEFT, DOWN;
-
-        companion object {
-            fun of(c: Char): Direction =
-                when (c) {
-                    'R' -> RIGHT
-                    'U' -> UP
-                    'L' -> LEFT
-                    'D' -> DOWN
-                    else -> throw IllegalArgumentException()
-                }
+        val diffX = (previous.x - x)
+        val diffY = (previous.y - y)
+        return if (diffX !in -1..1 || diffY !in -1..1) {
+            Knot(
+                x = x + diffX.sign,
+                y = y + diffY.sign
+            )
+        } else {
+            this
         }
     }
 }

@@ -1,3 +1,5 @@
+import common.FileInput
+
 fun main(vararg args: String) {
     if (args.isEmpty()) throw IllegalArgumentException("Missing arguments")
     val day = args[0].toIntOrNull()

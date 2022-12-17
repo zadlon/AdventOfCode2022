@@ -1,3 +1,5 @@
+import common.Input
+
 typealias Crate = Char
 typealias Stack = ArrayDeque<Crate>
 typealias CrateMover = Day05.Instruction.(Day05.Cargo) -> Unit

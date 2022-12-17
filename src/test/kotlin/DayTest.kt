@@ -1,3 +1,6 @@
+import common.FileInput
+import common.Input
+
 internal abstract class DayTest {
 
     internal val testInput: Input get() = getTestInput()

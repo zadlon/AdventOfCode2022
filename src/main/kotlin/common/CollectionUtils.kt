@@ -1,3 +1,5 @@
+package common
+
 import java.util.PriorityQueue
 
 fun Sequence<String>.group() = group { line -> line.isBlank() }

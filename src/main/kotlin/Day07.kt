@@ -1,3 +1,5 @@
+import common.Input
+
 object Day07 : Day<Int, Int>() {
 
     override fun part1(input: Input): Int {

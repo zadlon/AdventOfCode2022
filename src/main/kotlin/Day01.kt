@@ -1,3 +1,7 @@
+import common.Input
+import common.group
+import common.nMax
+
 typealias Calories = String
 typealias Elf = List<Calories>
 

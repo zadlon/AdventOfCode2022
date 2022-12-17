@@ -1,3 +1,4 @@
+import common.StringInput
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 import kotlin.test.assertEquals

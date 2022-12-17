@@ -1,3 +1,6 @@
+import common.Input
+import common.Position
+
 object Day14 : Day<Int, Int>() {
 
     private val SAND_START_POSITION = Position(500, 0)
@@ -37,10 +40,11 @@ object Day14 : Day<Int, Int>() {
         internal fun nextSand(): Position {
             var current = SAND_START_POSITION
             while (current.y < maxDepth) {
+                var c: Position
                 current = when {
-                    current.down !in this -> current.down
-                    current.left !in this -> current.left
-                    current.right !in this -> current.right
+                    current.down() !in this -> current.down()
+                    current.downLeft() !in this -> current.downLeft()
+                    current.downRight() !in this -> current.downRight()
                     else -> break
                 }
             }
@@ -65,32 +69,20 @@ object Day14 : Day<Int, Int>() {
     private fun parse(string: String): List<Position> =
         string
             .split(" -> ")
-            .map { coordinates -> Position.of(coordinates) }
+            .map { coordinates -> parsePosition(coordinates) }
             .zipWithNext { p1, p2 -> p1.drawLine(p2) }
             .flatten()
 
-
-    data class Position(val x: Int, val y: Int) {
-
-        companion object {
-            fun of(string: String): Position {
-                val coordinates = string.split(',')
-                return Position(coordinates[0].toInt(), coordinates[1].toInt())
-            }
-        }
-
-        val left: Position get() = Position(x - 1, y + 1)
-
-        val right: Position get() = Position(x + 1, y + 1)
-
-        val down: Position get() = Position(x, y + 1)
-
-        fun drawLine(other: Position): List<Position> =
-            when {
-                x > other.x || y > other.y -> other.drawLine(this)
-                x == other.x -> (y..other.y).map { Position(x, it) }
-                else -> (x..other.x).map { Position(it, y) }
-            }
+    private fun parsePosition(string: String): Position {
+        val coordinates = string.split(',')
+        return Position(coordinates[0].toInt(), coordinates[1].toInt())
     }
+
+    private fun Position.drawLine(other: Position): List<Position> =
+        when {
+            x > other.x || y > other.y -> other.drawLine(this)
+            x == other.x -> (y..other.y).map { Position(x, it) }
+            else -> (x..other.x).map { Position(it, y) }
+        }
 
 }

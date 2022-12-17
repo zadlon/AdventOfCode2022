@@ -1,3 +1,8 @@
+import common.FileInput
+import common.Input
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTimedValue
+
 abstract class Day<T, V> {
 
     open val defaultInput: Input
@@ -8,12 +13,15 @@ abstract class Day<T, V> {
                 ?: throw IllegalArgumentException("Resource [$resourceName] not found")
         }
 
+    @OptIn(ExperimentalTime::class)
     fun run(input: Input = defaultInput) {
+        val (partOneResult, partOneDuration) = measureTimedValue { part1(input) }
+        val (partTwoResult, partTwoDuration) = measureTimedValue { part2(input) }
         println(
-            """-Part 1: 
-${part1(input)}
--Part 2:
-${part2(input)}"""
+            """-Part 1 (${partOneDuration.inWholeMilliseconds} ms): 
+$partOneResult
+-Part 2 (${partTwoDuration.inWholeMilliseconds} ms):
+$partTwoResult"""
         )
     }
 

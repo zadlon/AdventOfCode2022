@@ -1,3 +1,5 @@
+import common.Input
+
 typealias Round = CharArray
 typealias RoundScoreDecoder = (Round) -> Int
 

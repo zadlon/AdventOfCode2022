@@ -1,3 +1,5 @@
+import common.Input
+
 object Day03 : Day<Int, Int>() {
 
     override fun part1(input: Input): Int = input.useContentLines { commonItemBetweenCompartments(it) }

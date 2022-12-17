@@ -1,8 +1,9 @@
+import common.Input
+
 typealias Tree = Int
 typealias Forest = List<List<Tree>>
-typealias Direction = List<Tree>
-typealias TreeViews = List<Direction>
-typealias TreeViewsFolder<T> = TreeViews.(Tree) -> T
+typealias TreeView = List<Tree>
+typealias TreeViewsFolder<T> = List<List<Tree>>.(Tree) -> T
 
 object Day08 : Day<Int, Int>() {
 
@@ -30,7 +31,7 @@ object Day08 : Day<Int, Int>() {
 
     private fun readForest(sequence: Sequence<String>): Forest =
         sequence
-            .map { line -> line.map { char -> char - '0' } }
+            .map { line -> List(line.length) { idx -> line[idx] - '0'} }
             .toList()
 
     private inline fun Forest.solve(
@@ -51,7 +52,7 @@ object Day08 : Day<Int, Int>() {
         return acc
     }
 
-    private fun Forest.getFourDirections(height: Int, width: Int): TreeViews {
+    private fun Forest.getFourDirections(height: Int, width: Int): List<TreeView> {
         val line = this[height]
         return listOf(
             line.subList(0, width).asReversed(),
