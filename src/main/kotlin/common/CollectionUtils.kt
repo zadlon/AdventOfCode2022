@@ -47,3 +47,38 @@ fun <T> Iterator<T>.nMax(n: Int, comparator: Comparator<T>): List<T> {
     return pq.toList()
 }
 
+fun <T> List<T>.circular(): Iterable<T> = object : Iterable<T> {
+    override fun iterator(): Iterator<T> = this@circular.circularIterator()
+}
+
+fun <T> List<T>.circularWithIndex(): Iterable<IndexedValue<T>> = object : Iterable<IndexedValue<T>> {
+    override fun iterator(): Iterator<IndexedValue<T>> = this@circularWithIndex.circularWithIndexIterator()
+}
+
+fun <T> List<T>.circularIterator(): Iterator<T> = object : Iterator<T> {
+
+    private var source: Iterator<T> = this@circularIterator.iterator()
+
+    override fun hasNext(): Boolean = this@circularIterator.isNotEmpty()
+
+    override fun next(): T =
+        when {
+            source.hasNext() -> source.next()
+            else -> this@circularIterator.iterator().also { source = it }.next()
+        }
+
+}
+
+fun <T> List<T>.circularWithIndexIterator(): Iterator<IndexedValue<T>> = object : Iterator<IndexedValue<T>> {
+
+    private var source: Iterator<IndexedValue<T>> = this@circularWithIndexIterator.withIndex().iterator()
+
+    override fun hasNext(): Boolean = this@circularWithIndexIterator.isNotEmpty()
+
+    override fun next(): IndexedValue<T> =
+        when {
+            source.hasNext() -> source.next()
+            else -> this@circularWithIndexIterator.withIndex().iterator().also { source = it }.next()
+        }
+
+}
