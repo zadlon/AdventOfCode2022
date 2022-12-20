@@ -82,3 +82,11 @@ fun <T> List<T>.circularWithIndexIterator(): Iterator<IndexedValue<T>> = object 
         }
 
 }
+
+private const val INT_MAX_POWER_OF_TWO: Int = 1 shl (Int.SIZE_BITS - 2)
+
+fun mapCapacity(size: Int) =
+    when {
+        size <= INT_MAX_POWER_OF_TWO -> ((size * 0.75F) + 1).toInt()
+        else -> Int.MAX_VALUE
+    }
