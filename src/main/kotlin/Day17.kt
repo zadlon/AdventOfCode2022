@@ -293,7 +293,6 @@ object Day17 : Day<Long, Long>() {
         private val blocked: MutableSet<Position> = mutableSetOf()
         private val topEdges = IntArray(width)
         private var topEdge: Int = 0
-        private var bottomEdge: Int = 0
         private var topEdgesHash: Int = topEdges.contentHashCode()
 
         private val periodStartCache = mutableMapOf<PeriodStartKey, PeriodStartValue>()
@@ -315,11 +314,11 @@ object Day17 : Day<Long, Long>() {
                 if (!periodFound) {
                     val patternKey = PeriodStartKey(shapeIdx, jetIdx, topEdgesHash)
                     periodStartCache.putIfAbsent(patternKey, PeriodStartValue(iteration, topEdge))
-                        ?.let { (counterAtPeriodStart, heightAtPeriodStart) ->
+                        ?.let { (counterAtPeriodStart, topEdgeAtStart) ->
                             periodFound = true
                             val period = iteration - counterAtPeriodStart
                             val repetitions = (iterations - iteration) / period
-                            repeatedPeriodHeight = (topEdge - heightAtPeriodStart) * repetitions
+                            repeatedPeriodHeight = (topEdge - topEdgeAtStart) * repetitions
                             iteration += repetitions * period
                             periodStartCache.clear()
                         }
@@ -379,8 +378,7 @@ object Day17 : Day<Long, Long>() {
             }
             if (changed) {
                 topEdge = topEdges.max()
-                bottomEdge = topEdges.min()
-                topEdgesHash = topEdges.map { it - bottomEdge }.hashCode()
+                topEdgesHash = topEdges.map { it - topEdge }.hashCode()
             }
         }
 
