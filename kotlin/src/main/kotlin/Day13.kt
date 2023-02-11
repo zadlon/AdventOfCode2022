@@ -1,5 +1,5 @@
 import common.Input
-import common.group
+import common.split
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
@@ -10,7 +10,7 @@ object Day13 : Day<Int, Int>() {
     override fun part1(input: Input): Int =
         input.useContentLines { lines ->
             lines
-                .group()
+                .split()
                 .map { pair -> pair.map { Json.parseToJsonElement(it) } }
                 .withIndex()
                 .filter { (_, pair) -> pair[0] <= pair[1] }

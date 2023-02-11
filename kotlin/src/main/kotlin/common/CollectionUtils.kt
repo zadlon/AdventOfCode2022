@@ -2,19 +2,19 @@ package common
 
 import java.util.PriorityQueue
 
-fun Sequence<String>.group() = group { line -> line.isBlank() }
+fun Sequence<String>.split() = split { line -> line.isBlank() }
 
-inline fun <T> Sequence<T>.group(crossinline separator: (T) -> Boolean): Sequence<List<T>> =
-    Sequence { iterator().group(separator) }
+inline fun <T> Sequence<T>.split(crossinline separator: (T) -> Boolean): Sequence<List<T>> =
+    Sequence { iterator().split(separator) }
 
-inline fun <T> Iterator<T>.group(crossinline separator: (T) -> Boolean): Iterator<List<T>> = object : Iterator<List<T>> {
+inline fun <T> Iterator<T>.split(crossinline separator: (T) -> Boolean): Iterator<List<T>> = object : Iterator<List<T>> {
 
-    override fun hasNext(): Boolean = this@group.hasNext()
+    override fun hasNext(): Boolean = this@split.hasNext()
 
     override fun next(): List<T> {
         val res = mutableListOf<T>()
-        while (this@group.hasNext()) {
-            val next = this@group.next()
+        while (this@split.hasNext()) {
+            val next = this@split.next()
             if (separator(next)) {
                 break
             }

@@ -1,5 +1,5 @@
 import common.Input
-import common.group
+import common.split
 import common.nMax
 
 typealias Calories = String
@@ -15,14 +15,14 @@ object Day01 : Day<Int, Int>() {
 
     private fun findMaxCaloriesBySequence(input: Sequence<String>): Int =
         input
-            .group()
+            .split()
             .maxOf { elf -> elf.countCarryingCalories() }
 
     //Part 2:
 
     private fun findTotalForTop3BySequence(input: Sequence<String>): Int =
         input
-            .group()
+            .split()
             .map { elf -> elf.countCarryingCalories() }
             .nMax(3)
             .sum()
