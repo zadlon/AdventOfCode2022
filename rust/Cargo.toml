@@ -1,14 +1,14 @@
 [package]
-name = "AdventOfCode2022"
+name = "advent_of_code2022"
 version = "0.1.0"
 edition = "2021"
 
 [lib]
-name = "AdventOfCode2022Lib"
+name = "advent_of_code2022_lib"
 path = "src/lib.rs"
 
 [[bin]]
-name = "AdventOfCode2022Bin"
+name = "advent_of_code2022_bin"
 path = "src/bin.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

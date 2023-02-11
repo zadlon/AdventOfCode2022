@@ -1,5 +1,5 @@
 use std::env;
-use AdventOfCode2022Lib::{Day, day01, default_input};
+use advent_of_code2022_lib::{Day, day01, default_input};
 
 fn main() {
     let args: Vec<String> = env::args().collect();

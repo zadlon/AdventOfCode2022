@@ -2,6 +2,7 @@ use std::fmt::Display;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::iter::FilterMap;
+use std::time::{Duration, SystemTime};
 
 pub mod day01;
 
@@ -13,9 +14,10 @@ pub trait Day<T, V>
     fn part2(&self) -> V;
 
     fn run(&self) {
-        let part1 = self.part1();
-        let part2 = self.part2();
-        println!("-Part 1: {}\n-Part 2: {}", part1, part2);
+        let part1 = TimedValue::of(|| self.part1());
+        let part2 = TimedValue::of(|| self.part2());
+        println!("-Part 1: ({} ms):\n {}", part1.duration.as_millis(), part1.value);
+        println!("-Part 2: ({} ms):\n {}", part2.duration.as_millis(), part2.value)
     }
 }
 
@@ -28,4 +30,17 @@ pub fn read_lines(filename: &str) -> FilteredLines {
 
 pub fn default_input(day: u8) -> String {
     format!("../input/{:0>2}/input.txt", day)
+}
+
+struct TimedValue<T> {
+    value: T,
+    duration: Duration,
+}
+
+impl<T> TimedValue<T> {
+    fn of(f: impl Fn() -> T) -> TimedValue<T> {
+        let now = SystemTime::now();
+        let value = f();
+        TimedValue { value, duration: now.elapsed().unwrap() }
+    }
 }
