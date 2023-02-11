@@ -1,5 +1,6 @@
 import common.FileInput
 import common.Input
+import java.io.File
 
 internal abstract class DayTest {
 
@@ -10,10 +11,11 @@ internal abstract class DayTest {
     internal val testInputPart2: Input get() = getTestInput("_part2")
 
     private fun getTestInput(suffix: String = "") : Input {
-        val path = "test/${this::class.java.simpleName.lowercase().removeSuffix("test")}$suffix.txt"
-        return this::class.java.getResource(path)
-            ?.let { FileInput(it.file) }
-            ?: throw IllegalArgumentException("Cannot find resources for test class: ${this::class.java.simpleName} with path: [$path]")
+        val day = this::class.java.simpleName.removePrefix("Day").removeSuffix("Test")
+        val filename = "../input/$day/test$suffix.txt"
+        return File(filename)
+            .also { if (!it.exists()) throw IllegalArgumentException("[$filename] does not exist.") }
+            .let { FileInput(it) }
     }
 
 }

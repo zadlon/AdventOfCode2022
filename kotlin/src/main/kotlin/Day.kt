@@ -1,5 +1,6 @@
 import common.FileInput
 import common.Input
+import java.io.File
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTimedValue
 
@@ -7,10 +8,11 @@ abstract class Day<T, V> {
 
     open val defaultInput: Input
         get() {
-            val resourceName = "input/${this::class.java.simpleName.lowercase()}.txt"
-            return Day::class.java.getResource(resourceName)
-                ?.let { url -> FileInput(url.file) }
-                ?: throw IllegalArgumentException("Resource [$resourceName] not found")
+            val day = this::class.java.simpleName.removePrefix("Day")
+            val filename = "../input/$day/input.txt"
+            return File(filename)
+                .also { if (!it.exists()) throw IllegalArgumentException("[$filename] does not exist.") }
+                .let { FileInput(it) }
         }
 
     @OptIn(ExperimentalTime::class)

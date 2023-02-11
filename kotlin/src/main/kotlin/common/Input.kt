@@ -11,9 +11,9 @@ sealed interface Input {
     fun <T> useContentLines(block: (Sequence<String>) -> T): T
 }
 
-class FileInput(filePath: String) : Input {
+class FileInput(private val file: File) : Input {
 
-    private val file = File(filePath)
+    constructor(filePath: String): this(File(filePath))
 
     override val contentText: String
         get() = file.readText(Charsets.UTF_8)
