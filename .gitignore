@@ -1,4 +1,3 @@
-/.gradle
-/.idea
-/build
-/input
+.gradle/
+.idea/
+build/
