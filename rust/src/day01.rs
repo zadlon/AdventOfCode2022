@@ -5,7 +5,7 @@ pub struct Day1 {
 }
 
 impl Day1 {
-    pub fn from(filename: &str) -> Self {
+    pub fn from(filename: &str) -> Day1 {
         let input = read_lines(filename)
             .collect::<Vec<String>>()
             .split(|s| s.is_empty())

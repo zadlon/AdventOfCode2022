@@ -5,6 +5,7 @@ use std::iter::FilterMap;
 use std::time::{Duration, SystemTime};
 
 pub mod day01;
+pub mod day02;
 
 pub trait Day<T, V>
     where T: Display + Sized,
